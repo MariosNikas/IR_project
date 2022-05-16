@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>First Flask App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+    body {font-family : arial,serif;}
+    li   {font-family : arial,serif;
+        list-style-type: none;
+        font-size: 22px;
+        margin-right: 10px;}
+    </style>
+</head>
+
+<script >
+
+function handleClick() {
+    $('li').on('click', function() {
+    $(this).parent().prepend(this);
+});
+}
+
+
+function myFunction() {
+var text1= $('#text1').val();
+var text2= $('#text2').val();
+
+  $.ajax({
+              url: "/join",
+              type: "POST",
+              data: {text1:text1,
+                  text2:text2
+              }
+          }).done(function(response) {
+            var result= "<p style='text-align: center'><br><br><br><p> <b> Αποτέλεσμα : <b><p></p> ";
+            var result= "<p style='text-align: center; font-style: italic; font-size: 22px'><br><br><br> Πατήστε πάνω στο κουμπί ¨Σχετικο¨ για να δηλώσετε αν ένα αποτέλεσμα της αναζήτησης είναι επιθυμητό.</p>";
+            var title= "<ul onClick='handleClick()'>";
+            var engine="";
+            response =response.result;
+            console.log("Response: ", response)
+                 $.each(response,function(key,val){
+                 console.log(val);
+                 title+="<li style='text-align: center; ''list-style-type: none;'><a href='"+key+"'>"+key+" </a> &ensp;Σχετικό <br /></li>"
+
+                });
+
+                 title+="</ul>";
+
+
+
+                $(".show-data").append(result).append(title);
+            });
+};
+
+
+
+  </script>
+<body>
+    <p>
+        <h1 style="text-align: center;
+        font-size:35px;
+        text-decoration: underline;
+        font-weight :bold">Μηχανή Αναζήτησης</h1> <br>
+
+    <h3 style="text-align :center">Εισάγεται το ερώτημα σας :</h3> <input style=" display: block; margin-left: auto;
+    margin-right: auto;" type="text" id="text1" name="text1"><br><br>
+
+    <h3 style="text-align : center">Πόσα αποτελέσματα θα εμφανίζονται :</h3> <input style="display: block; margin-left: auto;
+    margin-right: auto;" type="text" id="text2" name="text2"><br><br>
+
+            <button style="display: block; margin-left: auto;
+    margin-right: auto;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    border-radius: 18px;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 15px 30px 15px 30px;
+    border: solid #1f628d 2px;
+    text-decoration: none;" id="clicked" onclick="myFunction()">Υποβολή</button>
+        </p>
+    <div class="show-data" >
+    </div>
+</body>
+</html>
